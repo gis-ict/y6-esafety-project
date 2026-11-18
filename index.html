@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finish Your Safety Game</title>
+<style>
+:root{--ink:#24361a;--green:#3e6b1f;--grass:#6cc644;--grass2:#9adf6b;--sun:#ffc928;--honey:#f29e1f;--cream:#fff6c7;--card:#fff;--line:#d9efc4;--ok:#2e7d32;--bad:#c0392b;
+--ev:#FFBF00;--se:#5CB1D6;--co:#FFAB19;--va:#FF8C1A;--lo:#9966FF;--op:#59C059}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fffdf3;color:var(--ink);font:19px/1.5 Calibri,"Segoe UI",system-ui,sans-serif}
+button{font:inherit;cursor:pointer}
+header{position:sticky;top:0;z-index:5;background:var(--cream);border-bottom:3px solid var(--grass2)}
+.top{max-width:1100px;margin:0 auto;padding:10px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.top h1{margin:0;font:700 22px "Bookman Old Style",Georgia,serif;flex:1;min-width:220px}
+.timer{display:flex;gap:6px;align-items:center;background:#fff;border:2px solid var(--grass2);border-radius:12px;padding:4px 8px}
+.timer b{font-variant-numeric:tabular-nums;min-width:58px;text-align:center;font-size:20px}
+.timer.over b{color:var(--bad)}
+.sbtn{background:var(--grass);color:#fff;border:0;border-radius:8px;padding:4px 12px;font-weight:700;font-size:16px}
+nav{max-width:1100px;margin:0 auto;padding:0 16px 10px;display:flex;gap:8px;flex-wrap:wrap}
+nav button{border:2px solid var(--grass2);background:#fff;border-radius:999px;padding:6px 14px;font-size:16px;color:var(--ink)}
+nav button.on{background:var(--grass);border-color:var(--grass);color:#fff;font-weight:700}
+nav button.done:not(.on)::after{content:" ✓";color:var(--ok)}
+main{max-width:1100px;margin:0 auto;padding:22px 16px 140px}
+section{display:none}section.on{display:block}
+h2{font:700 32px "Bookman Old Style",Georgia,serif;margin:0 0 4px;color:var(--green)}
+.lao{color:#5a6b4e;font-size:17px;margin:2px 0 0}
+.mins{display:inline-block;background:var(--sun);border-radius:999px;padding:2px 12px;font-weight:700;font-size:15px;margin-bottom:8px}
+.lead{margin:6px 0 18px;font-size:20px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px 16px}
+.card h3{margin:0 0 6px;font-size:21px;color:var(--green)}
+.big{font-size:22px}
+/* checklist */
+.check{display:flex;gap:12px;align-items:flex-start;background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;cursor:pointer}
+.check input{width:28px;height:28px;margin-top:2px;accent-color:var(--grass);flex:0 0 auto}
+.check.done{background:#eef9e6;border-color:var(--grass2)}
+.check .t{font-weight:700}
+/* scratch blocks */
+.script{display:inline-flex;flex-direction:column;gap:3px;margin:8px 0;font-size:15px}
+.b{display:inline-block;color:#fff;border-radius:6px;padding:4px 10px;font-weight:700;width:max-content;max-width:100%;box-shadow:inset 0 -2px 0 rgba(0,0,0,.18)}
+.b.hat{border-radius:14px 14px 6px 6px;padding-top:7px}
+.b .v{background:#fff;color:#333;border-radius:999px;padding:0 8px;margin:0 2px}
+.b .r{background:rgba(0,0,0,.18);border-radius:999px;padding:0 8px;margin:0 2px}
+.in{margin-left:20px;display:flex;flex-direction:column;gap:3px;border-left:12px solid var(--co);padding:3px 0 3px 4px}
+.ev{background:var(--ev);color:#3b2a00}.se{background:var(--se)}.co{background:var(--co);color:#3b2a00}.va{background:var(--va)}.lo{background:var(--lo)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.tabs button{border:2px solid var(--line);background:#fff;border-radius:10px;padding:6px 12px;font-size:16px}
+.tabs button.on{border-color:var(--honey);background:#fff3d1;font-weight:700}
+.recipe{display:none}.recipe.on{display:block}
+/* stopwatch */
+.watch{font:700 72px/1 "Bookman Old Style",Georgia,serif;font-variant-numeric:tabular-nums;margin:10px 0;color:var(--green)}
+.watch.over{color:var(--bad)}
+.btn{background:var(--grass);color:#fff;border:0;border-radius:12px;padding:10px 20px;font-weight:700}
+.btn.alt{background:#fff;color:var(--green);border:2px solid var(--grass)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.bug{border-left:0}
+.bug summary{cursor:pointer;font-weight:700;padding:4px 0}
+.bug p{margin:6px 0}
+.score{font:700 28px "Bookman Old Style",Georgia,serif;color:var(--green)}
+details.teacher{margin-top:20px;background:#f2f8ec;border-radius:12px;padding:10px 14px;font-size:16px}
+details.teacher summary{cursor:pointer;font-weight:700;color:var(--green)}
+.foot{position:fixed;left:0;right:0;bottom:0;z-index:5;pointer-events:none}
+.hills{height:40px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 60' preserveAspectRatio='none'%3E%3Cpath d='M0 40 Q250 0 520 30 Q800 60 1080 22 Q1350 -4 1600 34 L1600 60 L0 60Z' fill='%239adf6b'/%3E%3Cpath d='M0 52 Q300 24 640 48 Q950 66 1250 40 Q1450 26 1600 46 L1600 60 L0 60Z' fill='%236cc644'/%3E%3C/svg%3E") bottom/100% 100% no-repeat}
+.bar{background:var(--grass);pointer-events:auto}
+.bar .in2{max-width:1100px;margin:0 auto;padding:0 16px 10px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.bar .where{color:#fff;font-weight:700;text-align:center;flex:1}
+.nb{background:#fff;color:var(--green);border:0;border-radius:12px;padding:8px 18px;font-weight:700}
+.nb:disabled{opacity:.4;cursor:default}
+.bee{position:fixed;right:18px;top:120px;font-size:34px;animation:fly 6s ease-in-out infinite;pointer-events:none}
+@keyframes fly{0%,100%{transform:translate(0,0) rotate(-6deg)}50%{transform:translate(-40px,18px) rotate(6deg)}}
+.mo{background:#4C97FF}.op{background:var(--op)}.b .o{background:var(--op);border-radius:999px;padding:0 8px;margin:0 2px}
+.b .s{background:var(--se);border-radius:999px;padding:0 8px;margin:0 2px}
+.b .vr{background:var(--va);border-radius:999px;padding:0 8px;margin:0 2px}
+.in.c2{border-color:var(--co)}
+nav button.ref{border-style:dashed}
+.code{display:grid;gap:16px;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:start}
+.code .script{font-size:14px}
+.tag{display:inline-block;border-radius:6px;padding:0 8px;font-size:14px;font-weight:700;color:#fff;margin:2px 4px 2px 0}
+.tg-i{background:var(--se)}.tg-v{background:var(--va)}.tg-b{background:var(--co);color:#3b2a00}.tg-l{background:#d4880f}.tg-w{background:var(--grass)}.tg-x{background:var(--bad)}
+.qcard{background:#fff;border:2px solid var(--line);border-radius:14px;padding:10px 14px;margin-bottom:10px}
+.qcard .q{font-weight:700}
+.qcard .meta{font-size:15px;margin-top:4px}
+.qcard .copy{float:right;background:#fff3d1;border:2px solid var(--sun);border-radius:8px;padding:2px 10px;font-size:14px;margin-left:8px}
+.rules{columns:2 260px;column-gap:16px;margin:0;padding-left:20px}
+.rules li{margin-bottom:6px;break-inside:avoid}
+@media (max-width:760px){.code{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.bee{animation:none}}
+@media (max-width:640px){h2{font-size:26px}.watch{font-size:56px}.bee{display:none}.top h1{font-size:18px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <h1>🌼 Finish Your Safety Game · Year 6</h1>
+    <div class="timer" id="timer" title="Timer for this part"><b id="tleft">3:00</b><button class="sbtn" id="tgo">Start</button><button class="sbtn" id="treset" style="background:var(--honey)">Reset</button></div>
+  </div>
+  <nav id="nav"></nav>
+</header>
+<div class="bee" aria-hidden="true">🐝</div>
+
+<main>
+
+<!-- 0 -->
+<section data-t="Start" data-min="3">
+  <span class="mins">3 min</span>
+  <h2>Today: finish your game</h2>
+  <p class="lao">ມື້ນີ້: ສ້າງເກມຂອງເຈົ້າໃຫ້ສຳເລັດ</p>
+  <p class="lead">Get out your plan from Monday. Open Scratch. By the end of today your game is <b>finished, tested and saved</b>.</p>
+  <div class="grid">
+    <div class="card"><h3>1. Build</h3><p>Finish your game from your plan.</p><p class="lao">ສ້າງເກມຕາມແຜນຂອງເຈົ້າ.</p></div>
+    <div class="card"><h3>2. Test</h3><p>Another pair plays your game.</p><p class="lao">ຄູ່ອື່ນທົດລອງຫຼິ້ນເກມຂອງເຈົ້າ.</p></div>
+    <div class="card"><h3>3. Fix</h3><p>Fix one thing. Save version 2.</p><p class="lao">ແກ້ໄຂ 1 ຢ່າງ. ບັນທຶກ v2.</p></div>
+    <div class="card"><h3>4. Check</h3><p>Does it meet the brief?</p><p class="lao">ເກມກົງກັບໂຈດບໍ?</p></div>
+  </div>
+  <details class="teacher"><summary>Teacher notes</summary>Hand back the Monday sheets first. Pairs who did not finish their plan can use "Sample blocks" and "Question ideas" (dashed buttons) and build straight from them. Each part has its own timer: press Start when the part begins.</details>
+</section>
+
+
+<!-- REF A -->
+<section data-t="📘 Sample blocks" data-min="0" data-ref="1">
+  <span class="mins">Reference</span>
+  <h2>Sample game blocks</h2>
+  <p class="lao">ບລັອກຂອງເກມຕົວຢ່າງ ເພື່ອເປັນແນວທາງ</p>
+  <p class="lead">This is the code inside <b>Safe Online</b>, the sample game. Use it as a guide. Change the questions, sprites and backdrops to make it <b>yours</b>.</p>
+  <p><a class="btn" style="text-decoration:none;display:inline-block" href="Safe_Online_Sample_Game.sb3" download>⬇ Download the sample game (.sb3)</a> <span style="font-size:16px">Open it in Scratch: File → Load from your computer.</span></p>
+  <div class="tabs" id="gtabs"></div>
+  <div id="guide"><div class="recipe"><div class="code"><div class="card"><h3>Script 1: Start the game</h3><div class="script"><span class="b ev hat">when green flag clicked</span><span class="b lo">switch backdrop to <span class="v">Blue Sky</span></span><span class="b va">set <span class="r">score</span> to <span class="v">0</span></span><span class="b va">set <span class="r">lives</span> to <span class="v">3</span></span><span class="b va">set <span class="r">timer</span> to <span class="v">120</span></span><span class="b lo">say <span class="v">Hi! I am Giga. Welcome to SAFE ONLINE!</span> for <span class="v">2</span> seconds</span><span class="b lo">say <span class="v">Answer 5 questions. You have 3 lives and 2 minutes.</span> for <span class="v">3</span> seconds</span><span class="b se">ask <span class="v">What is your name?</span> and wait</span><span class="b lo">say <span class="o">join <span class="v">Let's go, </span> <span class="s">answer</span></span> for <span class="v">2</span> seconds</span><span class="b lo">switch backdrop to <span class="v">Bedroom 1</span></span><span class="b ev">broadcast <span class="v">start timer</span></span><span class="b ev">broadcast <span class="v">q1</span> and wait</span><span class="b ev">broadcast <span class="v">q2</span> and wait</span><span class="b ev">broadcast <span class="v">...</span> and wait</span><span class="b ev">broadcast <span class="v">win</span> and wait</span></div></div><div class="card"><h3>What it does</h3><p>Sets up the game: score <b>0</b>, lives <b>3</b>, timer <b>120</b>. Asks the player's name and uses it.</p><p>Then it runs each question <b>in order</b> with <b>broadcast and wait</b>. If the player gets to the end, it broadcasts <b>win</b>.</p><p><span class="tag tg-i">INPUT</span><span class="tag tg-v">VARIABLE</span></p><p class="lao">ຕັ້ງຄ່າເລີ່ມຕົ້ນ ແລະ ຖາມຊື່ຜູ້ຫຼິ້ນ.</p></div></div></div><div class="recipe"><div class="code"><div class="card"><h3>Script 2: One question</h3><div class="script"><span class="b ev hat">when I receive <span class="v">q1</span></span><span class="b lo">switch costume to <span class="v">giga-a</span></span><span class="b se">ask <span class="v">Is every copy gone? (y or n)</span> and wait</span><span class="b co">if <span class="o"><span class="s">answer</span> = n</span> then</span><div class="in"><span class="b va">change <span class="r">score</span> by <span class="v">1</span></span><span class="b lo">switch costume to <span class="v">giga-b</span></span><span class="b lo">say <span class="v">Correct! Well done!</span> for <span class="v">2</span> seconds</span></div><span class="b co">else</span><div class="in"><span class="b va">change <span class="r">lives</span> by <span class="v">-1</span></span><span class="b lo">switch costume to <span class="v">giga-c</span></span><span class="b lo">say <span class="v">Oh no! Friends can screenshot it.</span> for <span class="v">4</span> seconds</span></div><span class="b co">if <span class="o"><span class="vr">lives</span> = 0 or <span class="vr">timer</span> &lt; 1</span> then</span><div class="in"><span class="b ev">broadcast <span class="v">lose</span></span><span class="b co">wait <span class="v">1</span> seconds</span></div></div></div><div class="card"><h3>What it does</h3><p>Asks one question. <b>If</b> the answer is right, score goes up. <b>Else</b> the player loses a life and Giga gives a <b>safety tip</b>.</p><p>Then it checks: no lives left, or no time left? Then the player <b>loses</b>.</p><p><b>Make the next question:</b> right-click the hat block → <b>Duplicate</b>, then change q1 to q2, the question, the answer and the tip.</p><p><span class="tag tg-i">INPUT</span><span class="tag tg-b">BRANCH</span><span class="tag tg-v">VARIABLE</span></p><p class="lao">ຖາມ 1 ຄຳຖາມ. ຖືກ: score +1. ຜິດ: lives -1 ແລະ ໃຫ້ຄຳແນະນຳ.</p></div></div></div><div class="recipe"><div class="code"><div class="card"><h3>Script 3: The timer</h3><div class="script"><span class="b ev hat">when I receive <span class="v">start timer</span></span><span class="b co">forever</span><div class="in"><span class="b co">wait <span class="v">1</span> seconds</span><span class="b co">if <span class="o"><span class="vr">timer</span> &gt; 0</span> then</span><div class="in"><span class="b va">change <span class="r">timer</span> by <span class="v">-1</span></span></div></div></div></div><div class="card"><h3>What it does</h3><p>Counts down 1 every second. This keeps the game under 2 minutes.</p><p><span class="tag tg-l">LOOP</span><span class="tag tg-v">VARIABLE</span></p><p class="lao">ນັບຖອຍຫຼັງທຸກໆ 1 ວິນາທີ.</p></div></div></div><div class="recipe"><div class="code"><div class="card"><h3>Script 4: WIN</h3><div class="script"><span class="b ev hat">when I receive <span class="v">win</span></span><span class="b co">stop <span class="v">other scripts in sprite</span></span><span class="b co">if <span class="o"><span class="vr">score</span> = 5</span> then</span><div class="in"><span class="b lo">switch backdrop to <span class="v">Party</span></span><span class="b lo">say <span class="v">You are a SUPER SAFE STAR!</span></span><span class="b co">repeat <span class="v">8</span></span><div class="in"><span class="b mo">change y by <span class="v">25</span></span><span class="b lo">next costume</span><span class="b co">wait <span class="v">0.15</span> seconds</span><span class="b mo">change y by <span class="v">-25</span></span></div></div><span class="b co">else</span><div class="in"><span class="b lo">switch backdrop to <span class="v">Blue Sky</span></span><span class="b lo">say <span class="v">You are a SAFE HELPER!</span> for <span class="v">4</span> seconds</span></div><span class="b lo">say <span class="v">Click the green flag to play again.</span></span></div></div><div class="card"><h3>What it does</h3><p>The player answered every question. <b>Stop other scripts</b> stops the timer.</p><p>5 out of 5: party backdrop and Giga <b>dances</b> (a repeat loop). Less than 5: Safe Helper.</p><p><span class="tag tg-w">WIN</span><span class="tag tg-b">BRANCH</span><span class="tag tg-l">LOOP</span></p><p class="lao">ຊະນະ: ຕອບຄົບທຸກຂໍ້.</p></div></div></div><div class="recipe"><div class="code"><div class="card"><h3>Script 5: LOSE</h3><div class="script"><span class="b ev hat">when I receive <span class="v">lose</span></span><span class="b co">stop <span class="v">other scripts in sprite</span></span><span class="b lo">switch backdrop to <span class="v">Stars</span></span><span class="b lo">switch costume to <span class="v">giga-c</span></span><span class="b co">if <span class="o"><span class="vr">lives</span> = 0</span> then</span><div class="in"><span class="b lo">say <span class="v">GAME OVER. You lost all 3 lives.</span> for <span class="v">3</span> seconds</span></div><span class="b co">else</span><div class="in"><span class="b lo">say <span class="v">GAME OVER. Time is up!</span> for <span class="v">3</span> seconds</span></div><span class="b lo">say <span class="v">Remember: never share passwords.</span> for <span class="v">4</span> seconds</span><span class="b lo">say <span class="v">Click the green flag to try again.</span></span></div></div><div class="card"><h3>What it does</h3><p>No lives or no time left. The game stops, says why the player lost, and reminds them of a safety rule.</p><p><span class="tag tg-x">LOSE</span><span class="tag tg-b">BRANCH</span></p><p class="lao">ແພ້: ໝົດຊີວິດ ຫຼື ໝົດເວລາ.</p></div></div></div></div>
+  <div class="card" style="margin-top:14px;background:#fff3d1;border-color:var(--sun)"><b>New block: broadcast.</b> It sends a message. Any script that starts with <b>when I receive</b> that message will run. Find it in <b>Events</b> (yellow). <b>Broadcast and wait</b> waits until that script is finished.<p class="lao">broadcast = ສົ່ງຂໍ້ຄວາມ ໃຫ້ script ອື່ນເລີ່ມເຮັດວຽກ.</p></div>
+  <details class="teacher"><summary>Teacher notes</summary>Broadcasts are optional. Pairs who find them hard can put all questions in one long script under the green flag, with an "if lives = 0" check after each question (see the Lose recipe in Build).</details>
+</section>
+
+<!-- REF B -->
+<section data-t="💡 Question ideas" data-min="0" data-ref="1">
+  <span class="mins">Reference</span>
+  <h2>E-safety rules and question ideas</h2>
+  <p class="lao">ກົດຄວາມປອດໄພອອນລາຍ ແລະ ຕົວຢ່າງຄຳຖາມ</p>
+  <p class="lead">Pick ONE rule for your game. Use these questions, or change them to make your own.</p>
+  <div class="card"><h3>The 12 e-safety rules</h3><ol class="rules">
+  <li><b>Think before you post.</b> Online can stay online.</li><li><b>Deleted is not gone.</b> Friends can screenshot it.</li>
+  <li><b>Keep info private.</b> Address, school, phone, birthday.</li><li><b>Ask before you post</b> a friend's photo.</li>
+  <li><b>Use two locks (MFA).</b> A code on a grown-up's phone.</li><li><b>Know, have, are.</b> Password, phone code, fingerprint.</li>
+  <li><b>Long and random wins.</b> pizza-moon-rocket.</li><li><b>Never share passwords</b> or login codes.</li>
+  <li><b>Free prize? Stop!</b> Close pop-ups that want passwords.</li><li><b>Don't click strange links.</b></li>
+  <li><b>Strangers stay strangers</b> in game chat.</li><li><b>Tell a trusted adult</b> if something feels wrong.</li></ol></div>
+  <div class="card" style="margin-top:12px"><h3>Make your own question</h3><p>1. Pick a rule. 2. Think of a real situation. 3. Ask: <b>Should you...? (y or n)</b> or <b>Which is safer? a = ... b = ...</b> 4. Write the right answer and a short tip.</p><p class="lao">1. ເລືອກກົດ 1 ຂໍ້. 2. ຄິດເຖິງເຫດການຈິງ. 3. ຂຽນຄຳຖາມ. 4. ຂຽນຄຳຕອບທີ່ຖືກ ແລະ ຄຳແນະນຳສັ້ນໆ.</p></div>
+  <h3 style="margin:18px 0 8px;color:var(--green)">👣 Digital footprint and privacy</h3><div class="qcard"><button class="copy" data-q="Sam deletes a silly photo. Is every copy gone?">Copy</button><div class="q">Sam deletes a silly photo. Is every copy gone?</div><div class="meta">Type: <b>y or n</b> · Right answer: <b>n</b> · Tip if wrong: <i>Friends can screenshot and share it.</i></div></div><div class="qcard"><button class="copy" data-q="Should you post your home address online?">Copy</button><div class="q">Should you post your home address online?</div><div class="meta">Type: <b>y or n</b> · Right answer: <b>n</b> · Tip if wrong: <i>Keep your address private.</i></div></div><div class="qcard"><button class="copy" data-q="A photo shows your school uniform. Is it safe to post for everyone?">Copy</button><div class="q">A photo shows your school uniform. Is it safe to post for everyone?</div><div class="meta">Type: <b>y or n</b> · Right answer: <b>n</b> · Tip if wrong: <i>Strangers can find your school.</i></div></div><div class="qcard"><button class="copy" data-q="Should you ask a friend before you post their photo?">Copy</button><div class="q">Should you ask a friend before you post their photo?</div><div class="meta">Type: <b>y or n</b> · Right answer: <b>y</b> · Tip if wrong: <i>Their photo is their footprint too.</i></div></div><div class="qcard"><button class="copy" data-q="Which is safe to share? a = your favourite colour  b = your phone number">Copy</button><div class="q">Which is safe to share? a = your favourite colour  b = your phone number</div><div class="meta">Type: <b>a or b</b> · Right answer: <b>a</b> · Tip if wrong: <i>Phone numbers are private.</i></div></div><div class="qcard"><button class="copy" data-q="Are your searches part of your digital footprint?">Copy</button><div class="q">Are your searches part of your digital footprint?</div><div class="meta">Type: <b>y or n</b> · Right answer: <b>y</b> · Tip if wrong: <i>Everything you do online leaves a footprint.</i></div></div><h3 style="margin:18px 0 8px;color:var(--green)">🔐 Locks and passwords</h3><div class="qcard"><button class="copy" data-q="An app sends a code to your grown-up's phone when you log in. Is that a good extra lock?">Copy</button><div class="q">An app sends a code to your grown-up's phone when you log in. Is that a good extra lock?</div><div class="meta">Type: <b>y or n</b> · Right answer: <b>y</b> · Tip if wrong: <i>Two locks (MFA) are safer than one.</i></div></div><div class="qcard"><button class="copy" data-q="A fingerprint is a lock you... k = KNOW  h = HAVE  a = ARE">Copy</button><div class="q">A fingerprint is a lock you... k = KNOW  h = HAVE  a = ARE</div><div class="meta">Type: <b>k, h or a</b> · Right answer: <b>a</b> · Tip if wrong: <i>A fingerprint is part of you.</i></div></div><div class="qcard"><button class="copy" data-q="A password is a lock you... k = KNOW  h = HAVE  a = ARE">Copy</button><div class="q">A password is a lock you... k = KNOW  h = HAVE  a = ARE</div><div class="meta">Type: <b>k, h or a</b> · Right answer: <b>k</b> · Tip if wrong: <i>A password is in your head.</i></div></div><div class="qcard"><button class="copy" data-q="A phone code is a lock you... k = KNOW  h = HAVE  a = ARE">Copy</button><div class="q">A phone code is a lock you... k = KNOW  h = HAVE  a = ARE</div><div class="meta">Type: <b>k, h or a</b> · Right answer: <b>h</b> · Tip if wrong: <i>You hold the phone in your hand.</i></div></div><div class="qcard"><button class="copy" data-q="Which password is stronger? a = 123456  b = pizza-moon-rocket">Copy</button><div class="q">Which password is stronger? a = 123456  b = pizza-moon-rocket</div><div class="meta">Type: <b>a or b</b> · Right answer: <b>b</b> · Tip if wrong: <i>Long and random is strong.</i></div></div><div class="qcard"><button class="copy" data-q="Your best friend asks for your password. Should you tell them?">Copy</button><div class="q">Your best friend asks for your password. Should you tell them?</div><div class="meta">Type: <b>y or n</b> · Right answer: <b>n</b> · Tip if wrong: <i>Only you and your grown-ups know it.</i></div></div><div class="qcard"><button class="copy" data-q="Is your pet's name a good password?">Copy</button><div class="q">Is your pet's name a good password?</div><div class="meta">Type: <b>y or n</b> · Right answer: <b>n</b> · Tip if wrong: <i>People can guess it from your posts.</i></div></div><h3 style="margin:18px 0 8px;color:var(--green)">🚨 Tricks and strangers</h3><div class="qcard"><button class="copy" data-q="A pop-up says: type your password to win a prize! Should you type it?">Copy</button><div class="q">A pop-up says: type your password to win a prize! Should you type it?</div><div class="meta">Type: <b>y or n</b> · Right answer: <b>n</b> · Tip if wrong: <i>Prizes never need passwords. Close it.</i></div></div><div class="qcard"><button class="copy" data-q="Someone you don't know sends a link: &quot;Is this you??&quot; Should you click it?">Copy</button><div class="q">Someone you don't know sends a link: "Is this you??" Should you click it?</div><div class="meta">Type: <b>y or n</b> · Right answer: <b>n</b> · Tip if wrong: <i>Don't click. Tell a grown-up.</i></div></div><div class="qcard"><button class="copy" data-q="A player in a game chat asks which school you go to. Should you tell them?">Copy</button><div class="q">A player in a game chat asks which school you go to. Should you tell them?</div><div class="meta">Type: <b>y or n</b> · Right answer: <b>n</b> · Tip if wrong: <i>Strangers stay strangers.</i></div></div><div class="qcard"><button class="copy" data-q="Something online makes you feel scared. What should you do? a = keep it secret  b = tell a grown-up">Copy</button><div class="q">Something online makes you feel scared. What should you do? a = keep it secret  b = tell a grown-up</div><div class="meta">Type: <b>a or b</b> · Right answer: <b>b</b> · Tip if wrong: <i>Always tell a trusted adult.</i></div></div><div class="qcard"><button class="copy" data-q="A free torch app wants your contacts. Should you tap Allow?">Copy</button><div class="q">A free torch app wants your contacts. Should you tap Allow?</div><div class="meta">Type: <b>y or n</b> · Right answer: <b>n</b> · Tip if wrong: <i>A torch does not need your contacts.</i></div></div>
+  <details class="teacher"><summary>Teacher notes</summary>Copy puts the question on the clipboard so pairs can paste it into the ask block. Push pairs to write at least one question of their own.</details>
+</section>
+
+<!-- 1 -->
+<section data-t="1. Build" data-min="25">
+  <span class="mins">25 min · Swap at 12 min</span>
+  <h2>Build your game</h2>
+  <p class="lao">ສ້າງເກມຂອງເຈົ້າ. ສັບປ່ຽນໜ້າທີ່ກັນຢູ່ນາທີທີ 12.</p>
+  <p class="lead">Tick each step when it works.</p>
+  <div id="checks"></div>
+  <div class="card" style="margin-top:6px">
+    <h3>Need help? Pick a recipe</h3><p style="margin:0 0 6px">Or open <b>📘 Sample blocks</b> to see the full sample game code.</p>
+    <div class="tabs" id="tabs"></div>
+    <div id="recipes">
+      <div class="recipe">
+        <div class="script"><span class="b ev hat">when green flag clicked</span><span class="b va">set <span class="r">score</span> to <span class="v">0</span></span><span class="b va">set <span class="r">lives</span> to <span class="v">3</span></span><span class="b se">ask <span class="v">What is your name?</span> and wait</span></div>
+        <p>Make the variables first: <b>Variables → Make a Variable</b>.</p>
+      </div>
+      <div class="recipe">
+        <div class="script"><span class="b se">ask <span class="v">Should you share your password? (y or n)</span> and wait</span>
+          <span class="b co">if <span class="r">answer = n</span> then</span>
+          <div class="in"><span class="b va">change <span class="r">score</span> by <span class="v">1</span></span><span class="b lo">say <span class="v">Correct!</span> for <span class="v">2</span> seconds</span></div>
+          <span class="b co">else</span>
+          <div class="in"><span class="b va">change <span class="r">lives</span> by <span class="v">-1</span></span><span class="b lo">say <span class="v">Never share passwords!</span> for <span class="v">3</span> seconds</span></div>
+        </div>
+        <p>Right-click the <b>ask</b> block → <b>Duplicate</b> to make the next question.</p>
+      </div>
+      <div class="recipe">
+        <div class="script"><span class="b co">if <span class="r">lives = 0</span> then</span>
+          <div class="in"><span class="b lo">switch backdrop to <span class="v">Stars</span></span><span class="b lo">say <span class="v">Game over! Try again.</span></span><span class="b co">stop <span class="v">this script</span></span></div>
+        </div>
+        <p>Put this <b>after each question</b>.</p>
+      </div>
+      <div class="recipe">
+        <div class="script"><span class="b co">if <span class="r">score = 3</span> then</span>
+          <div class="in"><span class="b lo">switch backdrop to <span class="v">Party</span></span><span class="b lo">say <span class="v">You are a Safe Star!</span></span></div>
+          <span class="b co">else</span>
+          <div class="in"><span class="b lo">say <span class="v">Good try! Play again.</span></span></div>
+        </div>
+        <p>Put this <b>at the end</b>, after the last question.</p>
+      </div>
+      <div class="recipe">
+        <div class="script"><span class="b ev hat">when green flag clicked</span><span class="b va">set <span class="r">timer</span> to <span class="v">120</span></span><span class="b co">forever</span>
+          <div class="in"><span class="b co">wait <span class="v">1</span> seconds</span><span class="b va">change <span class="r">timer</span> by <span class="v">-1</span></span></div>
+        </div>
+        <p>Optional: a 2-minute countdown. This is a <b>loop</b>.</p>
+      </div>
+    </div>
+  </div>
+  <details class="teacher"><summary>Teacher notes</summary>Circulate with one question: "Show me your input, variable, branch and loop." Art rule: 5 minutes maximum in the paint editor. The game must work first.</details>
+</section>
+
+<!-- 2 -->
+<section data-t="2. Test" data-min="10">
+  <span class="mins">10 min</span>
+  <h2>Test with another pair</h2>
+  <p class="lao">ສັບປ່ຽນບ່ອນນັ່ງກັບຄູ່ອື່ນ ແລະ ທົດລອງຫຼິ້ນເກມຂອງເຂົາເຈົ້າ.</p>
+  <p class="lead">Swap seats. Play their game like a Year 3 student. Press <b>Start</b> when you click their green flag.</p>
+  <div class="grid">
+    <div class="card" style="text-align:center">
+      <h3>2-minute stopwatch</h3>
+      <div class="watch" id="watch">0:00</div>
+      <div class="row" style="justify-content:center"><button class="btn" id="wgo">Start</button><button class="btn alt" id="wreset">Reset</button></div>
+      <p id="wmsg" style="font-weight:700;min-height:28px"></p>
+    </div>
+    <div class="card">
+      <h3>Testers: write on a sticky note</h3>
+      <p class="big">✅ One thing that <b>worked</b></p>
+      <p class="lao">1 ຢ່າງທີ່ດີ</p>
+      <p class="big">❓ One thing that <b>confused</b> you</p>
+      <p class="lao">1 ຢ່າງທີ່ບໍ່ເຂົ້າໃຈ</p>
+      <p>Then stick it next to their computer.</p>
+    </div>
+  </div>
+  <details class="teacher"><summary>Teacher notes</summary>Testers must not help or explain. They play exactly as a Year 3 would. If the stopwatch passes 2:00, that is useful feedback for the "fix" part.</details>
+</section>
+
+<!-- 3 -->
+<section data-t="3. Fix" data-min="10">
+  <span class="mins">10 min</span>
+  <h2>Fix one thing, save version 2</h2>
+  <p class="lao">ແກ້ໄຂ 1 ຢ່າງ ຈາກຄຳແນະນຳ ແລ້ວບັນທຶກ v2.</p>
+  <p class="lead">Read your sticky note. Fix ONE thing. Stuck? Check the common bugs.</p>
+  <div class="grid">
+    <div>
+      <details class="card bug"><summary>🐞 The score starts at the old number</summary><p>Add <b>set score to 0</b> under the green flag.</p></details>
+      <details class="card bug"><summary>🐞 I typed the right answer but it says wrong</summary><p>Check the spelling in the <b>if answer =</b> block. "8" and "eight" are different. Remove any extra spaces.</p></details>
+      <details class="card bug"><summary>🐞 The game never ends</summary><p>Add a <b>win</b> message after the last question and an <b>if lives = 0</b> check after each question.</p></details>
+    </div>
+    <div>
+      <details class="card bug"><summary>🐞 Lives go below 0</summary><p>The <b>if lives = 0</b> check is missing or in the wrong place. Put it after each question.</p></details>
+      <details class="card bug"><summary>🐞 It takes longer than 2 minutes</summary><p>Make the <b>say for</b> times shorter, or remove one question.</p></details>
+      <details class="card bug"><summary>🐞 Year 3 did not understand a question</summary><p>Use shorter words. Tell them what to type: <b>(y or n)</b>.</p></details>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px;background:#fff3d1;border-color:var(--sun)">
+    <p class="big" style="margin:0">💾 <b>File → Save to your computer → Y6_Surname_SafetyGame_v2</b></p>
+    <p class="lao">ບັນທຶກເປັນ Y6_Surname_SafetyGame_v2</p>
+  </div>
+  <details class="teacher"><summary>Teacher notes</summary>For a stubborn score bug, ask them to trace it: "What does score say before the question? After a right answer?" Two saved versions are the evidence of iteration.</details>
+</section>
+
+<!-- 4 -->
+<section data-t="4. Check" data-min="7">
+  <span class="mins">7 min</span>
+  <h2>Check against the brief</h2>
+  <p class="lao">ກວດເບິ່ງວ່າເກມຂອງເຈົ້າກົງກັບໂຈດບໍ.</p>
+  <p class="lead">Tick each one your game does. Be honest!</p>
+  <div id="crit"></div>
+  <div class="card" style="text-align:center"><div class="score" id="critScore">0 / 8</div><p id="critMsg"></p></div>
+  <div class="card" style="margin-top:12px"><h3>Write one next step</h3><p>"Next time we would add or change ______ because ______."</p><p class="lao">ຄັ້ງໜ້າ ພວກເຮົາຈະເພີ່ມ ຫຼື ປ່ຽນ ______ ເພາະວ່າ ______.</p></div>
+  <details class="teacher"><summary>Teacher notes</summary>This is the mid-project check. Collect the next-step sentence on the Monday sheet as evidence.</details>
+</section>
+
+<!-- 5 -->
+<section data-t="5. Finish" data-min="5">
+  <span class="mins">5 min</span>
+  <h2>Show and finish</h2>
+  <p class="lao">ສະແດງເກມ ແລະ ສຳເລັດບົດຮຽນ.</p>
+  <div class="grid">
+    <div class="card"><h3>🌼 Show time</h3><p>Two pairs play their game on the big screen. The class answers like Year 3.</p></div>
+    <div class="card"><h3>🐝 Exit question</h3><p class="big">Which e-safety rule does your game teach, and how does the player win?</p><p class="lao">ເກມຂອງເຈົ້າສອນກົດຄວາມປອດໄພຂໍ້ໃດ ແລະ ຜູ້ຫຼິ້ນຊະນະແນວໃດ?</p></div>
+    <div class="card"><h3>💾 Last check</h3><p>Is <b>v2</b> saved? Hand in your sheet and sticky note.</p><p class="lao">ບັນທຶກ v2 ແລ້ວບໍ? ສົ່ງເຈ້ຍ ແລະ ສະຕິກເກີໃຫ້ຄູ.</p></div>
+  </div>
+</section>
+
+</main>
+
+<div class="foot"><div class="hills"></div><div class="bar"><div class="in2">
+  <button class="nb" id="prev">← Back</button><div class="where" id="where"></div><button class="nb" id="next">Next →</button>
+</div></div></div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const store={get(k,d){try{const v=localStorage.getItem('y6dp2_'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('y6dp2_'+k,JSON.stringify(v))}catch(e){}}};
+const secs=$$('main section');let cur=Math.min(store.get('cur',0),secs.length-1);const seen=new Set(store.get('seen',[]));
+
+secs.forEach((s,i)=>{const b=document.createElement('button');b.textContent=s.dataset.t;if(s.dataset.ref)b.classList.add('ref');b.onclick=()=>go(i);$('#nav').appendChild(b)});
+function go(i){cur=Math.max(0,Math.min(secs.length-1,i));seen.add(cur);
+  secs.forEach((s,k)=>s.classList.toggle('on',k===cur));
+  $$('#nav button').forEach((b,k)=>{b.classList.toggle('on',k===cur);b.classList.toggle('done',seen.has(k))});
+  $('#prev').disabled=cur===0;$('#next').disabled=cur===secs.length-1;
+  $('#where').textContent=secs[cur].dataset.t+(secs[cur].dataset.ref?' · Reference':' · '+secs[cur].dataset.min+' min');$('#timer').style.visibility=secs[cur].dataset.ref?'hidden':'visible';
+  window.scrollTo({top:0});resetT();store.set('cur',cur);store.set('seen',[...seen])}
+$('#prev').onclick=()=>go(cur-1);$('#next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key==='ArrowRight')go(cur+1);if(e.key==='ArrowLeft')go(cur-1)});
+
+/* part timer */
+let left=0,tk=null;
+const fmt=n=>{const a=Math.abs(n);return(n<0?'+':'')+Math.floor(a/60)+':'+String(a%60).padStart(2,'0')};
+function showT(){$('#tleft').textContent=fmt(left);$('#timer').classList.toggle('over',left<0)}
+function resetT(){clearInterval(tk);tk=null;left=+secs[cur].dataset.min*60;$('#tgo').textContent='Start';showT()}
+$('#tgo').onclick=()=>{if(tk){clearInterval(tk);tk=null;$('#tgo').textContent='Start'}else{tk=setInterval(()=>{left--;showT()},1000);$('#tgo').textContent='Pause'}};
+$('#treset').onclick=resetT;
+
+/* build checklist */
+const B=[
+ ['Start: set score to 0 (and lives to 3)','under the green flag','ຕັ້ງ score ເປັນ 0'],
+ ['INPUT: ask a question','ask ... and wait','ຖາມຄຳຖາມ'],
+ ['BRANCH: check the answer','if answer = ... then ... else','ກວດຄຳຕອບ'],
+ ['VARIABLE: score changes','change score by 1 when right','score ປ່ຽນເມື່ອຕອບຖືກ'],
+ ['3 to 5 questions done','right-click → Duplicate','ຄຳຖາມ 3 ຫາ 5 ຂໍ້'],
+ ['LOSE: if lives = 0, game over','after each question','ແພ້ ເມື່ອ lives = 0'],
+ ['WIN: a message at the end','if score = ... then say You win','ຊະນະ: ມີຂໍ້ຄວາມຕອນທ້າຍ'],
+ ['LOOP: repeat or forever','for example a timer or a dance','ມີ repeat ຫຼື forever'],
+ ['Save version 1','File → Save to your computer → Y6_Surname_SafetyGame_v1','ບັນທຶກ v1'],
+];
+function checklist(el,items,key,onchange){let done=store.get(key,[]);
+  el.innerHTML=items.map(([t,d,l],i)=>`<label class="check ${done.includes(i)?'done':''}"><input type="checkbox" data-i="${i}" ${done.includes(i)?'checked':''}><div><div class="t">${t}</div><div style="font-size:16px">${d}</div>${l?`<div class="lao">${l}</div>`:''}</div></label>`).join('');
+  el.querySelectorAll('input').forEach(c=>c.onchange=()=>{const i=+c.dataset.i;done=c.checked?[...new Set([...done,i])]:done.filter(x=>x!==i);store.set(key,done);c.closest('.check').classList.toggle('done',c.checked);onchange&&onchange(done)});
+  onchange&&onchange(done)}
+checklist($('#checks'),B,'build');
+
+/* recipe tabs */
+const RT=['Start','Ask and check','Lose','Win','Timer loop'];
+$('#tabs').innerHTML=RT.map((t,i)=>`<button data-i="${i}">${t}</button>`).join('');
+function tab(i){$$('#tabs button').forEach((b,k)=>b.classList.toggle('on',k===i));$$('#recipes .recipe').forEach((r,k)=>r.classList.toggle('on',k===i))}
+$$('#tabs button').forEach(b=>b.onclick=()=>tab(+b.dataset.i));tab(0);
+const GT=['1. Start','2. One question','3. Timer','4. Win','5. Lose'];
+$('#gtabs').innerHTML=GT.map((t,i)=>`<button data-i="${i}">${t}</button>`).join('');
+function gtab(i){$$('#gtabs button').forEach((b,k)=>b.classList.toggle('on',k===i));$$('#guide .recipe').forEach((r,k)=>r.classList.toggle('on',k===i))}
+$$('#gtabs button').forEach(b=>b.onclick=()=>gtab(+b.dataset.i));gtab(0);
+$$('.copy').forEach(b=>b.onclick=async()=>{const t=b.dataset.q;let ok=false;try{await navigator.clipboard.writeText(t);ok=true}catch(e){try{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();ok=document.execCommand('copy');a.remove()}catch(e2){}}b.textContent=ok?'Copied ✓':'Select it';setTimeout(()=>b.textContent='Copy',1500)});
+
+/* stopwatch */
+let w=0,wt=null;
+function showW(){$('#watch').textContent=fmt(w);$('#watch').classList.toggle('over',w>120);
+  $('#wmsg').textContent=w>120?'⏰ Over 2 minutes: make it shorter!':w>0&&!wt?'✅ Finished in '+fmt(w)+'. Under 2 minutes!':''}
+$('#wgo').onclick=()=>{if(wt){clearInterval(wt);wt=null;$('#wgo').textContent='Start';showW()}else{wt=setInterval(()=>{w++;showW()},1000);$('#wgo').textContent='Stop';$('#wmsg').textContent=''}};
+$('#wreset').onclick=()=>{clearInterval(wt);wt=null;w=0;$('#wgo').textContent='Start';showW()};
+
+/* criteria */
+const C=[
+ ['Teaches ONE e-safety rule','ສອນກົດຄວາມປອດໄພ 1 ຂໍ້'],['Easy words for Year 3','ຄຳສັບງ່າຍສຳລັບ Year 3'],
+ ['Playable in 2 minutes','ຫຼິ້ນໄດ້ພາຍໃນ 2 ນາທີ'],['Keyboard only, no mouse','ໃຊ້ແປ້ນພິມເທົ່ານັ້ນ'],
+ ['Has input, variable, branch and loop','ມີ input, variable, branch ແລະ loop'],['Has a way to win','ມີວິທີຊະນະ'],
+ ['Has a way to lose','ມີວິທີແພ້'],['Saved v1 and v2','ບັນທຶກ v1 ແລະ v2'],
+];
+checklist($('#crit'),C.map(([t,l])=>[t,'',l]),'crit',done=>{const n=done.length;$('#critScore').textContent=n+' / '+C.length;
+  $('#critMsg').textContent=n===C.length?'🌼 Brilliant! Your game meets the brief.':n>=6?'🐝 Nearly there. Fix the missing ones next lesson.':'Keep going. Use your next step to plan the fixes.'});
+
+go(cur);
+})();
+</script>
+</body>
+</html>
