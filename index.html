@@ -85,6 +85,29 @@ nav button.ref{border-style:dashed}
 .rules{columns:2 260px;column-gap:16px;margin:0;padding-left:20px}
 .rules li{margin-bottom:6px;break-inside:avoid}
 @media (max-width:760px){.code{grid-template-columns:1fr}}
+
+/* C-blocks */
+.scr{display:inline-flex;flex-direction:column;gap:2px;margin:6px 0;font-size:15px;max-width:100%}
+.scr .b{max-width:100%}
+.cb{display:inline-flex;flex-direction:column;border-radius:6px;width:max-content;max-width:100%;font-weight:700;box-shadow:inset 0 -2px 0 rgba(0,0,0,.15)}
+.cb.co{background:var(--co);color:#3b2a00}
+.cb .arm{padding:5px 10px}
+.cb .mouth{margin-left:18px;background:#fff;border-radius:6px 0 0 6px;padding:18px 8px 6px 6px;display:flex;flex-direction:column;gap:2px;min-height:34px;position:relative;font-weight:700;color:#fff}
+.cb .mouth.alt{background:#fff8ea}
+.cb .mouth::before{content:attr(data-in);position:absolute;left:6px;top:2px;font-size:11px;letter-spacing:.3px;color:#b36b00;font-weight:700;text-transform:uppercase}
+.cb .bottom{height:16px;border-radius:0 0 6px 6px;font-size:11px;padding:0 10px;display:flex;align-items:center;justify-content:flex-end;gap:6px;color:#6b4300}
+.scr .v{background:#fff;color:#333;border-radius:999px;padding:0 8px;margin:0 2px}
+.scr .o{background:var(--op);color:#fff;border-radius:999px;padding:1px 8px;margin:0 2px}
+.scr .s{background:var(--se);color:#fff;border-radius:999px;padding:0 8px;margin:0 2px}
+.scr .vr{background:var(--va);color:#fff;border-radius:999px;padding:0 8px;margin:0 2px}
+.nolabels .cb .mouth::before{content:none}.nolabels .cb .mouth{padding-top:6px}
+.words{margin-top:8px}.words summary{cursor:pointer;font-weight:700;color:var(--green)}
+.wtxt{background:#f6fbf1;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:15px/1.6 Consolas,"Courier New",monospace;white-space:pre-wrap;margin:6px 0 0}
+.legend{margin-bottom:14px;background:#fffdf0}
+.lg{display:grid;gap:16px;grid-template-columns:auto 1fr;align-items:center}
+.lg p{margin:6px 0}
+.lbtn{background:#fff;border:2px solid var(--grass);color:var(--green);border-radius:10px;padding:4px 12px;font-size:15px;font-weight:700}
+@media (max-width:760px){.lg{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.bee{animation:none}}
 @media (max-width:640px){h2{font-size:26px}.watch{font-size:56px}.bee{display:none}.top h1{font-size:18px}}
 </style>
@@ -124,8 +147,20 @@ nav button.ref{border-style:dashed}
   <p class="lao">ບລັອກຂອງເກມຕົວຢ່າງ ເພື່ອເປັນແນວທາງ</p>
   <p class="lead">This is the code inside <b>Safe Online</b>, the sample game. Use it as a guide. Change the questions, sprites and backdrops to make it <b>yours</b>.</p>
   <p><a class="btn" style="text-decoration:none;display:inline-block" href="Safe_Online_Sample_Game.sb3" download>⬇ Download the sample game (.sb3)</a> <span style="font-size:16px">Open it in Scratch: File → Load from your computer.</span></p>
-  <div class="tabs" id="gtabs"></div>
-  <div id="guide"><div class="recipe"><div class="code"><div class="card"><h3>Script 1: Start the game</h3><div class="script"><span class="b ev hat">when green flag clicked</span><span class="b lo">switch backdrop to <span class="v">Blue Sky</span></span><span class="b va">set <span class="r">score</span> to <span class="v">0</span></span><span class="b va">set <span class="r">lives</span> to <span class="v">3</span></span><span class="b va">set <span class="r">timer</span> to <span class="v">120</span></span><span class="b lo">say <span class="v">Hi! I am Giga. Welcome to SAFE ONLINE!</span> for <span class="v">2</span> seconds</span><span class="b lo">say <span class="v">Answer 5 questions. You have 3 lives and 2 minutes.</span> for <span class="v">3</span> seconds</span><span class="b se">ask <span class="v">What is your name?</span> and wait</span><span class="b lo">say <span class="o">join <span class="v">Let's go, </span> <span class="s">answer</span></span> for <span class="v">2</span> seconds</span><span class="b lo">switch backdrop to <span class="v">Bedroom 1</span></span><span class="b ev">broadcast <span class="v">start timer</span></span><span class="b ev">broadcast <span class="v">q1</span> and wait</span><span class="b ev">broadcast <span class="v">q2</span> and wait</span><span class="b ev">broadcast <span class="v">...</span> and wait</span><span class="b ev">broadcast <span class="v">win</span> and wait</span></div></div><div class="card"><h3>What it does</h3><p>Sets up the game: score <b>0</b>, lives <b>3</b>, timer <b>120</b>. Asks the player's name and uses it.</p><p>Then it runs each question <b>in order</b> with <b>broadcast and wait</b>. If the player gets to the end, it broadcasts <b>win</b>.</p><p><span class="tag tg-i">INPUT</span><span class="tag tg-v">VARIABLE</span></p><p class="lao">ຕັ້ງຄ່າເລີ່ມຕົ້ນ ແລະ ຖາມຊື່ຜູ້ຫຼິ້ນ.</p></div></div></div><div class="recipe"><div class="code"><div class="card"><h3>Script 2: One question</h3><div class="script"><span class="b ev hat">when I receive <span class="v">q1</span></span><span class="b lo">switch costume to <span class="v">giga-a</span></span><span class="b se">ask <span class="v">Is every copy gone? (y or n)</span> and wait</span><span class="b co">if <span class="o"><span class="s">answer</span> = n</span> then</span><div class="in"><span class="b va">change <span class="r">score</span> by <span class="v">1</span></span><span class="b lo">switch costume to <span class="v">giga-b</span></span><span class="b lo">say <span class="v">Correct! Well done!</span> for <span class="v">2</span> seconds</span></div><span class="b co">else</span><div class="in"><span class="b va">change <span class="r">lives</span> by <span class="v">-1</span></span><span class="b lo">switch costume to <span class="v">giga-c</span></span><span class="b lo">say <span class="v">Oh no! Friends can screenshot it.</span> for <span class="v">4</span> seconds</span></div><span class="b co">if <span class="o"><span class="vr">lives</span> = 0 or <span class="vr">timer</span> &lt; 1</span> then</span><div class="in"><span class="b ev">broadcast <span class="v">lose</span></span><span class="b co">wait <span class="v">1</span> seconds</span></div></div></div><div class="card"><h3>What it does</h3><p>Asks one question. <b>If</b> the answer is right, score goes up. <b>Else</b> the player loses a life and Giga gives a <b>safety tip</b>.</p><p>Then it checks: no lives left, or no time left? Then the player <b>loses</b>.</p><p><b>Make the next question:</b> right-click the hat block → <b>Duplicate</b>, then change q1 to q2, the question, the answer and the tip.</p><p><span class="tag tg-i">INPUT</span><span class="tag tg-b">BRANCH</span><span class="tag tg-v">VARIABLE</span></p><p class="lao">ຖາມ 1 ຄຳຖາມ. ຖືກ: score +1. ຜິດ: lives -1 ແລະ ໃຫ້ຄຳແນະນຳ.</p></div></div></div><div class="recipe"><div class="code"><div class="card"><h3>Script 3: The timer</h3><div class="script"><span class="b ev hat">when I receive <span class="v">start timer</span></span><span class="b co">forever</span><div class="in"><span class="b co">wait <span class="v">1</span> seconds</span><span class="b co">if <span class="o"><span class="vr">timer</span> &gt; 0</span> then</span><div class="in"><span class="b va">change <span class="r">timer</span> by <span class="v">-1</span></span></div></div></div></div><div class="card"><h3>What it does</h3><p>Counts down 1 every second. This keeps the game under 2 minutes.</p><p><span class="tag tg-l">LOOP</span><span class="tag tg-v">VARIABLE</span></p><p class="lao">ນັບຖອຍຫຼັງທຸກໆ 1 ວິນາທີ.</p></div></div></div><div class="recipe"><div class="code"><div class="card"><h3>Script 4: WIN</h3><div class="script"><span class="b ev hat">when I receive <span class="v">win</span></span><span class="b co">stop <span class="v">other scripts in sprite</span></span><span class="b co">if <span class="o"><span class="vr">score</span> = 5</span> then</span><div class="in"><span class="b lo">switch backdrop to <span class="v">Party</span></span><span class="b lo">say <span class="v">You are a SUPER SAFE STAR!</span></span><span class="b co">repeat <span class="v">8</span></span><div class="in"><span class="b mo">change y by <span class="v">25</span></span><span class="b lo">next costume</span><span class="b co">wait <span class="v">0.15</span> seconds</span><span class="b mo">change y by <span class="v">-25</span></span></div></div><span class="b co">else</span><div class="in"><span class="b lo">switch backdrop to <span class="v">Blue Sky</span></span><span class="b lo">say <span class="v">You are a SAFE HELPER!</span> for <span class="v">4</span> seconds</span></div><span class="b lo">say <span class="v">Click the green flag to play again.</span></span></div></div><div class="card"><h3>What it does</h3><p>The player answered every question. <b>Stop other scripts</b> stops the timer.</p><p>5 out of 5: party backdrop and Giga <b>dances</b> (a repeat loop). Less than 5: Safe Helper.</p><p><span class="tag tg-w">WIN</span><span class="tag tg-b">BRANCH</span><span class="tag tg-l">LOOP</span></p><p class="lao">ຊະນະ: ຕອບຄົບທຸກຂໍ້.</p></div></div></div><div class="recipe"><div class="code"><div class="card"><h3>Script 5: LOSE</h3><div class="script"><span class="b ev hat">when I receive <span class="v">lose</span></span><span class="b co">stop <span class="v">other scripts in sprite</span></span><span class="b lo">switch backdrop to <span class="v">Stars</span></span><span class="b lo">switch costume to <span class="v">giga-c</span></span><span class="b co">if <span class="o"><span class="vr">lives</span> = 0</span> then</span><div class="in"><span class="b lo">say <span class="v">GAME OVER. You lost all 3 lives.</span> for <span class="v">3</span> seconds</span></div><span class="b co">else</span><div class="in"><span class="b lo">say <span class="v">GAME OVER. Time is up!</span> for <span class="v">3</span> seconds</span></div><span class="b lo">say <span class="v">Remember: never share passwords.</span> for <span class="v">4</span> seconds</span><span class="b lo">say <span class="v">Click the green flag to try again.</span></span></div></div><div class="card"><h3>What it does</h3><p>No lives or no time left. The game stops, says why the player lost, and reminds them of a safety rule.</p><p><span class="tag tg-x">LOSE</span><span class="tag tg-b">BRANCH</span></p><p class="lao">ແພ້: ໝົດຊີວິດ ຫຼື ໝົດເວລາ.</p></div></div></div></div>
+  <div class="row" style="justify-content:space-between"><div class="tabs" id="gtabs"></div><button class="lbtn" id="lbl">Hide inside labels</button></div>
+  <div class="card legend">
+    <h3>How to read the blocks</h3>
+    <div class="lg">
+      <div class="slot" data-s="legend"></div>
+      <div>
+        <p>🟧 The <b>mouth</b> of a C-block is the space inside it. Blocks in the mouth are <b>inside</b> the loop or the if.</p>
+        <p>⬇ Blocks <b>under the bottom arm</b> are <b>outside</b>. They run <b>after</b> the loop or the if.</p>
+        <p>👀 Look for the small labels: <i>inside forever</i>, <i>inside if</i>, <i>inside else</i>.</p>
+        <p class="lao">ບລັອກທີ່ຢູ່ໃນປາກຂອງບລັອກຮູບຕົວ C ແມ່ນຢູ່ "ພາຍໃນ" loop ຫຼື if. ບລັອກທີ່ຢູ່ລຸ່ມແຂນລຸ່ມ ແມ່ນເຮັດວຽກ "ຫຼັງຈາກ".</p>
+      </div>
+    </div>
+  </div>
+  <div id="guide"><div class="recipe"><div class="code"><div class="card"><h3>Script 1: Start the game</h3><div class="slot" data-s="g0"></div><details class="words"><summary>📝 Read it in words</summary><pre class="wtxt" data-s="g0"></pre></details></div><div class="card"><h3>What it does</h3><p>Sets up the game: score <b>0</b>, lives <b>3</b>, timer <b>120</b>. Asks the player's name and uses it.</p><p>Then it runs each question <b>in order</b> with <b>broadcast and wait</b>. If the player gets to the end, it broadcasts <b>win</b>.</p><p><span class="tag tg-i">INPUT</span><span class="tag tg-v">VARIABLE</span></p><p class="lao">ຕັ້ງຄ່າເລີ່ມຕົ້ນ ແລະ ຖາມຊື່ຜູ້ຫຼິ້ນ.</p></div></div></div><div class="recipe"><div class="code"><div class="card"><h3>Script 2: One question</h3><div class="slot" data-s="g1"></div><details class="words"><summary>📝 Read it in words</summary><pre class="wtxt" data-s="g1"></pre></details></div><div class="card"><h3>What it does</h3><p>Asks one question. <b>If</b> the answer is right, score goes up. <b>Else</b> the player loses a life and Giga gives a <b>safety tip</b>.</p><p>Then it checks: no lives left, or no time left? Then the player <b>loses</b>.</p><p><b>Make the next question:</b> right-click the hat block → <b>Duplicate</b>, then change q1 to q2, the question, the answer and the tip.</p><p><span class="tag tg-i">INPUT</span><span class="tag tg-b">BRANCH</span><span class="tag tg-v">VARIABLE</span></p><p class="lao">ຖາມ 1 ຄຳຖາມ. ຖືກ: score +1. ຜິດ: lives -1 ແລະ ໃຫ້ຄຳແນະນຳ.</p></div></div></div><div class="recipe"><div class="code"><div class="card"><h3>Script 3: The timer</h3><div class="slot" data-s="g2"></div><details class="words"><summary>📝 Read it in words</summary><pre class="wtxt" data-s="g2"></pre></details></div><div class="card"><h3>What it does</h3><p>Counts down 1 every second. This keeps the game under 2 minutes.</p><p><span class="tag tg-l">LOOP</span><span class="tag tg-v">VARIABLE</span></p><p class="lao">ນັບຖອຍຫຼັງທຸກໆ 1 ວິນາທີ.</p></div></div></div><div class="recipe"><div class="code"><div class="card"><h3>Script 4: WIN</h3><div class="slot" data-s="g3"></div><details class="words"><summary>📝 Read it in words</summary><pre class="wtxt" data-s="g3"></pre></details></div><div class="card"><h3>What it does</h3><p>The player answered every question. <b>Stop other scripts</b> stops the timer.</p><p>5 out of 5: party backdrop and Giga <b>dances</b> (a repeat loop). Less than 5: Safe Helper.</p><p><span class="tag tg-w">WIN</span><span class="tag tg-b">BRANCH</span><span class="tag tg-l">LOOP</span></p><p class="lao">ຊະນະ: ຕອບຄົບທຸກຂໍ້.</p></div></div></div><div class="recipe"><div class="code"><div class="card"><h3>Script 5: LOSE</h3><div class="slot" data-s="g4"></div><details class="words"><summary>📝 Read it in words</summary><pre class="wtxt" data-s="g4"></pre></details></div><div class="card"><h3>What it does</h3><p>No lives or no time left. The game stops, says why the player lost, and reminds them of a safety rule.</p><p><span class="tag tg-x">LOSE</span><span class="tag tg-b">BRANCH</span></p><p class="lao">ແພ້: ໝົດຊີວິດ ຫຼື ໝົດເວລາ.</p></div></div></div></div>
   <div class="card" style="margin-top:14px;background:#fff3d1;border-color:var(--sun)"><b>New block: broadcast.</b> It sends a message. Any script that starts with <b>when I receive</b> that message will run. Find it in <b>Events</b> (yellow). <b>Broadcast and wait</b> waits until that script is finished.<p class="lao">broadcast = ສົ່ງຂໍ້ຄວາມ ໃຫ້ script ອື່ນເລີ່ມເຮັດວຽກ.</p></div>
   <details class="teacher"><summary>Teacher notes</summary>Broadcasts are optional. Pairs who find them hard can put all questions in one long script under the green flag, with an "if lives = 0" check after each question (see the Lose recipe in Build).</details>
 </section>
@@ -158,40 +193,7 @@ nav button.ref{border-style:dashed}
   <div class="card" style="margin-top:6px">
     <h3>Need help? Pick a recipe</h3><p style="margin:0 0 6px">Or open <b>📘 Sample blocks</b> to see the full sample game code.</p>
     <div class="tabs" id="tabs"></div>
-    <div id="recipes">
-      <div class="recipe">
-        <div class="script"><span class="b ev hat">when green flag clicked</span><span class="b va">set <span class="r">score</span> to <span class="v">0</span></span><span class="b va">set <span class="r">lives</span> to <span class="v">3</span></span><span class="b se">ask <span class="v">What is your name?</span> and wait</span></div>
-        <p>Make the variables first: <b>Variables → Make a Variable</b>.</p>
-      </div>
-      <div class="recipe">
-        <div class="script"><span class="b se">ask <span class="v">Should you share your password? (y or n)</span> and wait</span>
-          <span class="b co">if <span class="r">answer = n</span> then</span>
-          <div class="in"><span class="b va">change <span class="r">score</span> by <span class="v">1</span></span><span class="b lo">say <span class="v">Correct!</span> for <span class="v">2</span> seconds</span></div>
-          <span class="b co">else</span>
-          <div class="in"><span class="b va">change <span class="r">lives</span> by <span class="v">-1</span></span><span class="b lo">say <span class="v">Never share passwords!</span> for <span class="v">3</span> seconds</span></div>
-        </div>
-        <p>Right-click the <b>ask</b> block → <b>Duplicate</b> to make the next question.</p>
-      </div>
-      <div class="recipe">
-        <div class="script"><span class="b co">if <span class="r">lives = 0</span> then</span>
-          <div class="in"><span class="b lo">switch backdrop to <span class="v">Stars</span></span><span class="b lo">say <span class="v">Game over! Try again.</span></span><span class="b co">stop <span class="v">this script</span></span></div>
-        </div>
-        <p>Put this <b>after each question</b>.</p>
-      </div>
-      <div class="recipe">
-        <div class="script"><span class="b co">if <span class="r">score = 3</span> then</span>
-          <div class="in"><span class="b lo">switch backdrop to <span class="v">Party</span></span><span class="b lo">say <span class="v">You are a Safe Star!</span></span></div>
-          <span class="b co">else</span>
-          <div class="in"><span class="b lo">say <span class="v">Good try! Play again.</span></span></div>
-        </div>
-        <p>Put this <b>at the end</b>, after the last question.</p>
-      </div>
-      <div class="recipe">
-        <div class="script"><span class="b ev hat">when green flag clicked</span><span class="b va">set <span class="r">timer</span> to <span class="v">120</span></span><span class="b co">forever</span>
-          <div class="in"><span class="b co">wait <span class="v">1</span> seconds</span><span class="b va">change <span class="r">timer</span> by <span class="v">-1</span></span></div>
-        </div>
-        <p>Optional: a 2-minute countdown. This is a <b>loop</b>.</p>
-      </div>
+    <div id="recipes"><div class="recipe"><div class="slot" data-s="r0"></div><p>Make the variables first: <b>Variables → Make a Variable</b>.</p></div><div class="recipe"><div class="slot" data-s="r1"></div><p>Right-click the <b>ask</b> block → <b>Duplicate</b> to make the next question.</p></div><div class="recipe"><div class="slot" data-s="r2"></div><p>Put this <b>after each question</b>, not inside the if or else.</p></div><div class="recipe"><div class="slot" data-s="r3"></div><p>Put this <b>at the end</b>, after the last question.</p></div><div class="recipe"><div class="slot" data-s="r4"></div><p>Optional: a 2-minute countdown. This is a <b>loop</b>.</p></div>
     </div>
   </div>
   <details class="teacher"><summary>Teacher notes</summary>Circulate with one question: "Show me your input, variable, branch and loop." Art rule: 5 minutes maximum in the paint editor. The game must work first.</details>
@@ -280,6 +282,52 @@ nav button.ref{border-style:dashed}
 <script>
 (function(){
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+/* ---------- Scratch block renderer ---------- */
+const I=x=>`<span class="v">${x}</span>`, V=x=>`<span class="vr">${x}</span>`, S=x=>`<span class="s">${x}</span>`, O=(...p)=>`<span class="o">${p.join(' ')}</span>`;
+const H=(c,t)=>({hat:c,t}), K=(c,t)=>({c,t});
+const CB=(t,body,kind,elseBody)=>({cb:t,body,kind,elseBody});
+function rb(list,depth){return list.map(b=>{
+  if(b.cb){const loop=b.kind==='loop';const alt=depth%2?' alt':'';
+    const name=b.cb.replace(/<[^>]+>/g,'').split(' ')[0];
+    let h=`<div class="cb co"><div class="arm">${b.cb}</div><div class="mouth${alt}" data-in="inside ${loop?name:'if (when true)'}">${rb(b.body,depth+1)}</div>`;
+    if(b.elseBody)h+=`<div class="arm">else</div><div class="mouth${alt}" data-in="inside else (when false)">${rb(b.elseBody,depth+1)}</div>`;
+    return h+`<div class="bottom">${loop?'↻ end of '+name:'end of if'}</div></div>`}
+  if(b.hat)return `<span class="b ${b.hat} hat">${b.t}</span>`;
+  return `<span class="b ${b.c}">${b.t}</span>`}).join('')}
+function words(list,ind){let out='';list.forEach(b=>{const pad='    '.repeat(ind);const tx=h=>{const d=document.createElement('div');d.innerHTML=h;return d.textContent.replace(/\s+/g,' ').trim()};
+  if(b.cb){out+=pad+tx(b.cb)+'\n'+words(b.body,ind+1);if(b.elseBody)out+=pad+'else\n'+words(b.elseBody,ind+1);out+=pad+(b.kind==='loop'?'end of '+tx(b.cb).split(' ')[0]:'end of if')+'\n'}
+  else out+=pad+tx(b.t)+'\n'});return out}
+const SAY=(m,n)=>K('lo',`say ${I(m)}`+(n?` for ${I(n)} seconds`:'')), SETV=(v,n)=>K('va',`set ${V(v)} to ${I(n)}`), CHG=(v,n)=>K('va',`change ${V(v)} by ${I(n)}`);
+const BD=n=>K('lo',`switch backdrop to ${I(n)}`), CO=n=>K('lo',`switch costume to ${I(n)}`), WAIT=n=>K('co',`wait ${I(n)} seconds`);
+const SCRIPTS={
+ legend:[H('ev','when green flag clicked'),CB(`repeat ${I(3)}`,[K('mo',`move ${I(10)} steps`),CB(`if ${O(S('key space pressed?'))} then`,[K('lo',`say ${I('Jump!')} for ${I(1)} seconds`)])],'loop'),SAY('I run AFTER the loop finishes.')],
+ g0:[H('ev','when green flag clicked'),BD('Blue Sky'),SETV('score',0),SETV('lives',3),SETV('timer',120),
+   SAY('Hi! I am Giga. Welcome to SAFE ONLINE!',2),SAY('Answer 5 questions. You have 3 lives and 2 minutes.',3),
+   K('se',`ask ${I('What is your name?')} and wait`),K('lo',`say ${O('join',I("Let's go, "),S('answer'))} for ${I(2)} seconds`),
+   BD('Bedroom 1'),K('ev',`broadcast ${I('start timer')}`),K('ev',`broadcast ${I('q1')} and wait`),K('ev',`broadcast ${I('q2')} and wait`),
+   K('ev',`broadcast ${I('q3')} and wait`),K('ev',`broadcast ${I('q4')} and wait`),K('ev',`broadcast ${I('q5')} and wait`),K('ev',`broadcast ${I('win')} and wait`)],
+ g1:[H('ev',`when I receive ${I('q1')}`),CO('giga-a'),K('se',`ask ${I('Is every copy gone? (y or n)')} and wait`),
+   CB(`if ${O(S('answer'),'=',I('n'))} then`,[CHG('score',1),CO('giga-b'),SAY('Correct! Well done!',2)],'if',[CHG('lives',-1),CO('giga-c'),SAY('Oh no! Friends can screenshot it.',4)]),
+   CB(`if ${O(O(V('lives'),'=',I(0)),'or',O(V('timer'),'&lt;',I(1)))} then`,[K('ev',`broadcast ${I('lose')}`),WAIT(1)])],
+ g2:[H('ev',`when I receive ${I('start timer')}`),CB('forever',[WAIT(1),CB(`if ${O(V('timer'),'&gt;',I(0))} then`,[CHG('timer',-1)])],'loop')],
+ g3:[H('ev',`when I receive ${I('win')}`),K('co',`stop ${I('other scripts in sprite')}`),CO('giga-b'),
+   CB(`if ${O(V('score'),'=',I(5))} then`,[BD('Party'),SAY('WOW! You are a SUPER SAFE STAR!'),
+     CB(`repeat ${I(8)}`,[K('mo',`change y by ${I(25)}`),K('lo','next costume'),WAIT(0.15),K('mo',`change y by ${I(-25)}`),WAIT(0.15)],'loop'),
+     SAY('You are a SUPER SAFE STAR! 5 out of 5!',3)],'if',[BD('Blue Sky'),SAY('You finished! You are a SAFE HELPER.',4)]),
+   SAY('Click the green flag to play again.')],
+ g4:[H('ev',`when I receive ${I('lose')}`),K('co',`stop ${I('other scripts in sprite')}`),BD('Stars'),CO('giga-c'),
+   CB(`if ${O(V('lives'),'=',I(0))} then`,[SAY('GAME OVER. You lost all 3 lives.',3)],'if',[SAY('GAME OVER. Time is up!',3)]),
+   SAY('Remember: never share passwords.',4),SAY('Click the green flag to try again.')],
+ r0:[H('ev','when green flag clicked'),SETV('score',0),SETV('lives',3),K('se',`ask ${I('What is your name?')} and wait`)],
+ r1:[K('se',`ask ${I('Should you share your password? (y or n)')} and wait`),
+   CB(`if ${O(S('answer'),'=',I('n'))} then`,[CHG('score',1),SAY('Correct!',2)],'if',[CHG('lives',-1),SAY('Never share passwords!',3)])],
+ r2:[CB(`if ${O(V('lives'),'=',I(0))} then`,[BD('Stars'),SAY('Game over! Try again.'),K('co',`stop ${I('this script')}`)])],
+ r3:[CB(`if ${O(V('score'),'=',I(3))} then`,[BD('Party'),SAY('You are a Safe Star!')],'if',[SAY('Good try! Play again.')])],
+ r4:[H('ev','when green flag clicked'),SETV('timer',120),CB('forever',[WAIT(1),CHG('timer',-1)],'loop')],
+};
+document.querySelectorAll('.slot').forEach(el=>{el.innerHTML='<div class="scr">'+rb(SCRIPTS[el.dataset.s],0)+'</div>'});
+document.querySelectorAll('.wtxt').forEach(el=>{el.textContent=words(SCRIPTS[el.dataset.s],0)});
+
 const store={get(k,d){try{const v=localStorage.getItem('y6dp2_'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('y6dp2_'+k,JSON.stringify(v))}catch(e){}}};
 const secs=$$('main section');let cur=Math.min(store.get('cur',0),secs.length-1);const seen=new Set(store.get('seen',[]));
 
@@ -328,6 +376,7 @@ const GT=['1. Start','2. One question','3. Timer','4. Win','5. Lose'];
 $('#gtabs').innerHTML=GT.map((t,i)=>`<button data-i="${i}">${t}</button>`).join('');
 function gtab(i){$$('#gtabs button').forEach((b,k)=>b.classList.toggle('on',k===i));$$('#guide .recipe').forEach((r,k)=>r.classList.toggle('on',k===i))}
 $$('#gtabs button').forEach(b=>b.onclick=()=>gtab(+b.dataset.i));gtab(0);
+$('#lbl').onclick=()=>{const on=document.body.classList.toggle('nolabels');$('#lbl').textContent=on?'Show inside labels':'Hide inside labels'};
 $$('.copy').forEach(b=>b.onclick=async()=>{const t=b.dataset.q;let ok=false;try{await navigator.clipboard.writeText(t);ok=true}catch(e){try{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();ok=document.execCommand('copy');a.remove()}catch(e2){}}b.textContent=ok?'Copied ✓':'Select it';setTimeout(()=>b.textContent='Copy',1500)});
 
 /* stopwatch */
